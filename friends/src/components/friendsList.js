@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 
 import Friend from "./friend";
 import FriendForm from "./friendForm";

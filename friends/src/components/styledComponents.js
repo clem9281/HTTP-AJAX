@@ -7,11 +7,12 @@ export const AppContainer = styled.div`
 
 export const HeaderDiv = styled.div`
   width: 100%;
+  text-align: center;
 `;
 
 export const Card = styled.div`
   flex: 0 1 90%;
-  margin: 20px auto;
+  margin: 10px auto;
   border-radius: 5px;
   border: 1px solid #cfd8dc;
   padding: 2rem;
@@ -21,4 +22,19 @@ export const Card = styled.div`
   @media (min-width: 1000px) {
     flex: 0 1 30%;
   }
+`;
+
+export const FormContainer = styled.div`
+  width: 90%;
+  margin: 0 auto;
+`;
+
+export const StyledForm = styled.form`
+  width: 50%;
+  margin: 20px auto;
+`;
+
+export const StyledInput = styled.input`
+  width: 100%;
+  margin: 10px 0;
 `;

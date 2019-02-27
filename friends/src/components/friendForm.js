@@ -1,33 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, FormikProps, Form, Field } from "formik";
+import {
+  StyledForm,
+  FormContainer,
+  HeaderDiv,
+  StyledInput
+} from "./styledComponents";
+import axios from "axios";
+
+// in order to render my custom styled component in the field component, it needs to be given it's formik properties back
+const CustomInputComponent = ({
+  field,
+  ...props // { name, value, onChange, onBlur }
+}) => (
+  <div>
+    <StyledInput {...props} {...field} />
+  </div>
+);
 
 const FriendForm = props => {
   return (
-    <div>
-      <h3>Add a Friend</h3>
+    <FormContainer>
+      <HeaderDiv>
+        <h3>Add a Friend</h3>
+      </HeaderDiv>
       <Formik
+        initialValues={{ email: "", age: "", name: "" }}
         onSubmit={(values, actions) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            actions.setSubmitting(false);
-          }, 1000);
+          console.log(values);
+          axios.post("http://localhost:5000/friends", values);
         }}
-        render={props => (
-          <form onSubmit={props.handleSubmit}>
-            <label htmlFor="name">Name: </label>
-            <input
-              type="text"
-              onChange={props.handleChange}
-              onBlur={props.handleBlur}
-              value={props.values.name}
+        render={(props: FormikProps<Values>) => (
+          <StyledForm onSubmit={props.handleSubmit}>
+            <Field
+              type="name"
               name="name"
+              placeholder="Name"
+              component={CustomInputComponent}
+              value={props.name}
             />
-            {props.errors.name && <div id="feedback">{props.errors.name}</div>}
+            <Field
+              type="number"
+              name="age"
+              placeholder="Age"
+              component={CustomInputComponent}
+            />
+            <Field
+              type="email"
+              name="email"
+              placeholder="Email"
+              component={CustomInputComponent}
+            />
+
             <button type="submit">Submit</button>
-          </form>
+          </StyledForm>
         )}
       />
-    </div>
+    </FormContainer>
   );
 };
 
