@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Formik, FormikProps, Form, Field } from "formik";
 import {
   StyledForm,
@@ -18,7 +18,7 @@ const CustomInputComponent = ({
   </div>
 );
 
-const FriendForm = props => {
+const FriendForm = ({ friends, addedFriends }) => {
   return (
     <FormContainer>
       <HeaderDiv>
@@ -27,8 +27,11 @@ const FriendForm = props => {
       <Formik
         initialValues={{ email: "", age: "", name: "" }}
         onSubmit={(values, actions) => {
-          console.log(values);
-          axios.post("http://localhost:5000/friends", values);
+          console.log(values, actions);
+          actions.resetForm();
+          axios
+            .post("http://localhost:5000/friends", values)
+            .then(res => addedFriends({ friends: res.data }));
         }}
         render={(props: FormikProps<Values>) => (
           <StyledForm onSubmit={props.handleSubmit}>

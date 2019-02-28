@@ -17,13 +17,20 @@ class App extends Component {
       .then(res => this.setState({ friends: res.data }))
       .catch(err => this.setState({ error: err }));
   }
+
+  addedFriends = newState => {
+    this.setState(newState);
+  };
   render() {
     return (
       <AppContainer>
         <HeaderDiv>
           <h1>FriendsList</h1>
         </HeaderDiv>
-        <FriendsList friends={this.state.friends} />
+        <FriendsList
+          friends={this.state.friends}
+          addedFriends={this.addedFriends}
+        />
       </AppContainer>
     );
   }

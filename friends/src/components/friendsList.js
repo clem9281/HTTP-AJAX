@@ -3,7 +3,7 @@ import React from "react";
 import Friend from "./friend";
 import FriendForm from "./friendForm";
 
-const FriendsList = ({ friends }) => {
+const FriendsList = ({ friends, addedFriends }) => {
   console.log(friends);
   if (!friends) {
     return <div>Loading....</div>;
@@ -13,7 +13,7 @@ const FriendsList = ({ friends }) => {
       {friends.map(friend => (
         <Friend friend={friend} key={friend.id} />
       ))}
-      <FriendForm />
+      <FriendForm friends={friends} addedFriends={addedFriends} />
     </>
   );
 };
