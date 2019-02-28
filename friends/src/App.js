@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { withRouter, Route, NavLink } from "react-router-dom";
+import { withRouter, Route } from "react-router-dom";
 
 import FriendsList from "./components/friendsList";
 import FriendForm from "./components/friendForm";
-import { AppContainer, HeaderDiv } from "./components/styledComponents";
+import {
+  AppContainer,
+  StyledNav,
+  StyledNavLink
+} from "./components/styledComponents";
 
 class App extends Component {
   constructor(props) {
@@ -46,49 +50,55 @@ class App extends Component {
   };
   goToForm = (event, friend) => {
     event.preventDefault();
-    console.log(friend);
     this.setState({ activeFriend: friend });
     this.props.history.push("/add-friend");
   };
   render() {
     return (
-      <AppContainer>
-        <HeaderDiv>
+      <>
+        <StyledNav>
           <h1>FriendsList</h1>
-          <NavLink to="/" exact>
-            {" "}
-            Home
-          </NavLink>
-          <NavLink to="/add-friend">Add New Friend</NavLink>
-        </HeaderDiv>
-
-        <Route
-          path="/"
-          exact
-          render={() => (
-            <FriendsList
-              {...this.props}
-              friends={this.state.friends}
-              addFriend={this.addFriend}
-              deleteFriend={this.deleteFriend}
-              goToForm={this.goToForm}
-            />
-          )}
-        />
-        <Route
-          path="/add-friend"
-          exact
-          render={() => (
-            <FriendForm
-              {...this.props}
-              friends={this.state.friends}
-              addFriend={this.addFriend}
-              activeFriend={this.state.activeFriend}
-              updateFriend={this.updateFriend}
-            />
-          )}
-        />
-      </AppContainer>
+          <div>
+            <StyledNavLink to="/" exact>
+              Home
+            </StyledNavLink>
+            <StyledNavLink
+              to="/add-friend"
+              onClick={() => this.setState({ activeFriend: null })}
+            >
+              Add New Friend
+            </StyledNavLink>
+          </div>
+        </StyledNav>
+        <AppContainer>
+          <Route
+            path="/"
+            exact
+            render={() => (
+              <FriendsList
+                {...this.props}
+                friends={this.state.friends}
+                addFriend={this.addFriend}
+                deleteFriend={this.deleteFriend}
+                goToForm={this.goToForm}
+              />
+            )}
+          />
+          <Route
+            path="/add-friend"
+            exact
+            render={() => (
+              <FriendForm
+                {...this.props}
+                friends={this.state.friends}
+                addFriend={this.addFriend}
+                activeFriend={this.state.activeFriend}
+                updateFriend={this.updateFriend}
+              />
+            )}
+          />
+        </AppContainer>
+      </>
     );
   }
 }

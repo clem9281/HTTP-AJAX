@@ -1,15 +1,8 @@
 import React from "react";
 
 import Friend from "./friend";
-import FriendForm from "./friendForm";
 
-const FriendsList = ({
-  friends,
-  addFriend,
-  deleteFriend,
-  history,
-  goToForm
-}) => {
+const FriendsList = ({ friends, deleteFriend, goToForm }) => {
   if (!friends) {
     return <div>Loading....</div>;
   }
@@ -20,7 +13,6 @@ const FriendsList = ({
           friend={friend}
           key={friend.id}
           deleteFriend={deleteFriend}
-          history={history}
           goToForm={goToForm}
         />
       ))}

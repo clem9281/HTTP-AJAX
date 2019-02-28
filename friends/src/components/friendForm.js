@@ -1,23 +1,38 @@
 import React from "react";
 import { Formik, Field, ErrorMessage } from "formik";
-import axios from "axios";
 import * as Yup from "yup";
 import {
   StyledForm,
   FormContainer,
-  HeaderDiv,
-  StyledInput
+  StyledInput,
+  StyledError,
+  StyledLabel,
+  PrimaryButton
 } from "./styledComponents";
 
 // in order to render my custom styled component in the field component, it needs to be given it's formik properties back
 const CustomInputComponent = ({
   field,
+  form: { touched, errors },
   ...props // { name, value, onChange, onBlur }
 }) => {
   return (
-    <div>
-      <StyledInput {...props} {...field} />
-      <ErrorMessage name={field.name}>{msg => <div>{msg}</div>}</ErrorMessage>
+    <div style={{ position: "relative" }}>
+      <StyledLabel htmlFor="name">
+        {field.name.replace(field.name[0], field.name[0].toUpperCase())}:
+      </StyledLabel>
+      <ErrorMessage name={field.name}>
+        {msg => <StyledError>{msg}</StyledError>}
+      </ErrorMessage>
+      <StyledInput
+        {...props}
+        {...field}
+        style={
+          touched[field.name] && errors[field.name]
+            ? { border: "1px solid #7f0000" }
+            : { border: "1px solid #cfd8dc" }
+        }
+      />
     </div>
   );
 };
@@ -25,10 +40,11 @@ const CustomInputComponent = ({
 const FriendForm = ({ addFriend, activeFriend, updateFriend }) => {
   return (
     <FormContainer>
-      <HeaderDiv>
-        <h3>Add a Friend</h3>
-      </HeaderDiv>
+      <h3 style={{ textAlign: "center" }}>
+        {activeFriend ? "Update Friend" : "Add A Friend"}
+      </h3>
       <Formik
+        enableReinitialize
         initialValues={{
           email: activeFriend ? activeFriend.email : "",
           age: activeFriend ? activeFriend.age : "",
@@ -64,9 +80,9 @@ const FriendForm = ({ addFriend, activeFriend, updateFriend }) => {
               placeholder="Email"
               component={CustomInputComponent}
             />
-            <button type="submit">
+            <PrimaryButton type="submit">
               {activeFriend ? "Update Friend" : "Add Friend"}
-            </button>
+            </PrimaryButton>
           </StyledForm>
         )}
       />

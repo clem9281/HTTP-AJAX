@@ -137,8 +137,18 @@ html {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  font-size: 62.5%;
 }
 h1 {
-  font-size: 2rem;
+  font-size: 2.4rem;
   margin: 10px;
+}
+h3 {
+  font-size: 2rem;
+}
+p,
+a,
+label {
+  font-size: 1.6rem;
 }
