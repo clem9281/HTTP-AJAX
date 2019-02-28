@@ -5,6 +5,8 @@ export const AppContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 export const StyledNav = styled.nav`
@@ -40,16 +42,15 @@ export const Card = styled.div`
   padding: 2rem;
   text-align: center;
   @media (min-width: 500px) {
-    flex: 0 1 45%;
+    flex: 0 1 46%;
   }
   @media (min-width: 1000px) {
-    flex: 0 1 30%;
+    flex: 0 1 32%;
   }
 `;
 
 export const FormContainer = styled.div`
   width: 90%;
-  max-width: 1200px;
   margin: 0 auto;
   @media (min-width: 500px) {
     width: 75%;
