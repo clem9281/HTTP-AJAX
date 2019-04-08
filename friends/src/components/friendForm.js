@@ -1,46 +1,72 @@
 import React from "react";
-import { Formik, FormikProps, Form, Field } from "formik";
+import { Formik, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import {
   StyledForm,
   FormContainer,
-  HeaderDiv,
-  StyledInput
+  StyledInput,
+  StyledError,
+  StyledLabel,
+  PrimaryButton
 } from "./styledComponents";
-import axios from "axios";
 
 // in order to render my custom styled component in the field component, it needs to be given it's formik properties back
 const CustomInputComponent = ({
   field,
+  form: { touched, errors },
   ...props // { name, value, onChange, onBlur }
-}) => (
-  <div>
-    <StyledInput {...props} {...field} />
-  </div>
-);
+}) => {
+  return (
+    <div style={{ position: "relative" }}>
+      <StyledLabel htmlFor="name">
+        {field.name.replace(field.name[0], field.name[0].toUpperCase())}:
+      </StyledLabel>
+      <ErrorMessage name={field.name}>
+        {msg => <StyledError>{msg}</StyledError>}
+      </ErrorMessage>
+      <StyledInput
+        {...props}
+        {...field}
+        style={
+          touched[field.name] && errors[field.name]
+            ? { border: "1px solid #7f0000" }
+            : { border: "1px solid #cfd8dc" }
+        }
+      />
+    </div>
+  );
+};
 
-const FriendForm = ({ friends, addedFriends }) => {
+const FriendForm = ({ addFriend, activeFriend, updateFriend }) => {
   return (
     <FormContainer>
-      <HeaderDiv>
-        <h3>Add a Friend</h3>
-      </HeaderDiv>
+      <h3 style={{ textAlign: "center" }}>
+        {activeFriend ? "Update Friend" : "Add A Friend"}
+      </h3>
       <Formik
-        initialValues={{ email: "", age: "", name: "" }}
-        onSubmit={(values, actions) => {
-          console.log(values, actions);
-          actions.resetForm();
-          axios
-            .post("http://localhost:5000/friends", values)
-            .then(res => addedFriends({ friends: res.data }));
+        enableReinitialize
+        initialValues={{
+          email: activeFriend ? activeFriend.email : "",
+          age: activeFriend ? activeFriend.age : "",
+          name: activeFriend ? activeFriend.name : ""
         }}
-        render={(props: FormikProps<Values>) => (
+        onSubmit={(values, actions) => {
+          activeFriend
+            ? updateFriend(values, actions, activeFriend.id)
+            : addFriend(values, actions);
+        }}
+        validationSchema={Yup.object({
+          name: Yup.string().required("Name is required"),
+          email: Yup.string().required("Email is required"),
+          age: Yup.number().required("Age is required")
+        })}
+        render={props => (
           <StyledForm onSubmit={props.handleSubmit}>
             <Field
               type="name"
               name="name"
               placeholder="Name"
               component={CustomInputComponent}
-              value={props.name}
             />
             <Field
               type="number"
@@ -54,8 +80,9 @@ const FriendForm = ({ friends, addedFriends }) => {
               placeholder="Email"
               component={CustomInputComponent}
             />
-
-            <button type="submit">Submit</button>
+            <PrimaryButton type="submit">
+              {activeFriend ? "Update Friend" : "Add Friend"}
+            </PrimaryButton>
           </StyledForm>
         )}
       />

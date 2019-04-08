@@ -1,19 +1,21 @@
 import React from "react";
 
 import Friend from "./friend";
-import FriendForm from "./friendForm";
 
-const FriendsList = ({ friends, addedFriends }) => {
-  console.log(friends);
+const FriendsList = ({ friends, deleteFriend, goToForm }) => {
   if (!friends) {
     return <div>Loading....</div>;
   }
   return (
     <>
       {friends.map(friend => (
-        <Friend friend={friend} key={friend.id} />
+        <Friend
+          friend={friend}
+          key={friend.id}
+          deleteFriend={deleteFriend}
+          goToForm={goToForm}
+        />
       ))}
-      <FriendForm friends={friends} addedFriends={addedFriends} />
     </>
   );
 };
